@@ -7,12 +7,10 @@ const port = 3000;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.get("/", (req, res) => {
-	res.json({ message: "Welcome to bezkoder application." });
-  });
 
-require("./api/routes/user.js")(app);
-
+require("./api/routes/user.routes.js")(app);
+require("./api/routes/car.routes.js")(app);
+require("./api/routes/carForRoad.routes.js")(app)
 app.listen(port, (err) => {
 	console.log("We are listen on port: ", port)
 	});
