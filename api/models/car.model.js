@@ -7,9 +7,10 @@ const CarType = require("../models/carType.model")
 //     this.brand = brand
 // }
 
-const Car = function(name, brand, idTypeCar, type, capacity) {
+const Car = function(name, brand, idTypeCar, type, capacity, img_path) {
     this.name = name
     this.brand = brand
+    this.img_path = img_path
     this.typeCar = new CarType(idTypeCar, type, capacity)
 }
 

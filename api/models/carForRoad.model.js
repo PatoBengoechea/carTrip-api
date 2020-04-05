@@ -7,11 +7,11 @@ const CarForRoad = function(carForRoad) {
     this.forService = carForRoad.forService
     this.longitude = carForRoad.longitude
     this.latitude = carForRoad.latitude
-    this.car = new Car(carForRoad.name, carForRoad.brand, carForRoad.idTypeCar, carForRoad.type, carForRoad.capacity)
+    this.car = new Car(carForRoad.name, carForRoad.brand, carForRoad.idTypeCar, carForRoad.type, carForRoad.capacity, carForRoad.img_path)
 }
 
 CarForRoad.getAll = (result) => {
-    sql.query("select * from carForRoad inner join car inner join typeCar type where carForRoad.idCar = car.idCar and type.idTypeCar = car.type",
+    sql.query("select * from carForRoad inner join car inner join typeCar type where carForRoad.idCar = car.idCar and type.idTypeCar = car.type and carForRoad.forService = 1",
      (err, res) => {
         if (err) {
             console.log("error", err)
