@@ -1,22 +1,33 @@
 const sql = require("../db")
+const Car = require("../models/car.model")
 
-const CarForRoad = function(idCar, available, forService, longitude, latitude) {
-    this.idCar = idCar
-    this.available = available
-    this.forService = forService
-    this.longitude = longitude
-    this.latitude = latitude
+const CarForRoad = function(carForRoad) {
+    this.idCarForRoad = carForRoad.idCarForRoad
+    this.available = carForRoad.available
+    this.forService = carForRoad.forService
+    this.longitude = carForRoad.longitude
+    this.latitude = carForRoad.latitude
+    this.car = new Car(carForRoad.name, carForRoad.brand, carForRoad.idTypeCar, carForRoad.type, carForRoad.capacity)
 }
 
 CarForRoad.getAll = (result) => {
-    sql.query("Select * from carForRoad", (err, res) => {
+    sql.query("select * from carForRoad inner join car inner join typeCar type where carForRoad.idCar = car.idCar and type.idTypeCar = car.type",
+     (err, res) => {
         if (err) {
             console.log("error", err)
             result(err, null)
             return
         } else if (res.length) { 
             console.log("cars on the road founded: ", res)
-            result(null, JSON.parse(JSON.stringify(res)))
+            let dataJson = JSON.parse(JSON.stringify(res))
+            var array = []
+            for (let i = 0; i < dataJson.length; i++) {
+                console.log(dataJson[i])
+                let car = new CarForRoad(dataJson[i])
+                array.push(car)
+            }
+            console.log(array)
+            result(null, array)
             return
         } else { 
             result({kind: "cars for road not founded"}, null)

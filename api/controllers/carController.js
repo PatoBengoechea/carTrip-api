@@ -16,7 +16,7 @@ exports.getByType = (req, res) => {
                     message: "No hay vehiculos con ese ID TYPE"
                 })
             } else {
-                res.status(500).send({
+                res.status(200).send({
                     status: true,
                     data: data,
                     message: null

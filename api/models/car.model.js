@@ -1,8 +1,16 @@
 const sql = require("../db")
+const CarType = require("../models/carType.model")
 
-const Car = function(name, brand) {
+// const Car = function(name, brand) {
+//     var name, brand
+//     this.name = name
+//     this.brand = brand
+// }
+
+const Car = function(name, brand, idTypeCar, type, capacity) {
     this.name = name
     this.brand = brand
+    this.typeCar = new CarType(idTypeCar, type, capacity)
 }
 
 Car.getByType = (typeCar, result) => {

@@ -9,7 +9,7 @@ exports.getAll = (req, res) => {
                 message: "There was a problem in the database"
             })
         } else {
-            res.status(500).send({
+            res.status(200).send({
                 status: true,
                 data: data,
                 message: null
