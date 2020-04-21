@@ -40,4 +40,23 @@ User.findByEmail = (userEmail, result) => {
     })
 }
 
+User.register = (user, result) => { 
+    console.log(user)
+    sql.query("insert into user (email, password, name, lastname, dni, birthdate) values ('"+ user.email + "', '"+ user.password + "', '" +
+     user.name +"', '" + user.lastname + "','" + user.dni +"','" + user.birthdate +"')",
+     (err, res) => { 
+        if(err) {
+            console.log("error: ", err)
+            result(err, null)
+            return 
+        }
+
+        if (res) {
+            console.log("user registered: ", res)
+            result(null, JSON.parse(JSON.stringify(res)))
+            return
+        }
+    })
+}
+
 module.exports = User;

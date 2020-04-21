@@ -5,4 +5,6 @@ module.exports = router => {
 
     router.post("/login", users.login)
 
+    router.post("/user/register", users.register)
+
 };
