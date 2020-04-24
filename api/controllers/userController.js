@@ -1,33 +1,6 @@
-const User = require("../models/user.model")
-
-exports.create = (req, res) => {
-
-    if (!req.body) {
-        res.status(400).send( {
-            status: false,
-            data: null,
-            message: "Error al obtener usuario"
-        })
-    }
-    const user = new User(req.body.email, req.body.password, req.body.name, req.body.lastname, req.body.birthdate, req.body.dni)
-    User.create(user, (err, data) => {
-        if (err) {
-            res.status(500).send({ 
-                status: false,
-                data: null,
-                message: "Error al crear un usuario"
-            })
-        }
-
-        else { 
-            res.send({
-                status: true,
-                data: data,
-                message: null
-            })
-        }
-    })
-}
+const { User }  = require("../sequelize.js")
+const Helper = require('../Helper/helper')
+const init = require('../Helper/initializer')
 
 exports.login = (req, res) => { 
 
@@ -39,29 +12,15 @@ exports.login = (req, res) => {
         })
     }
 
-    User.findByEmail(req.body.email, (err, data) => {
-        if (err) {
-            res.status(500).send({ 
-                status:false,
-                data: null,
-                message: "Usuario no encontrado"
-            })
+    User.findOne({ where: { email: req.body.email, password: req.body.password}})
+    .then(user => { 
+        if (user === null) {
+            res.status(200).json(Helper.basicResponse(null, 'Usuario o contraseña inexistente'))
         } else {
-            if (req.body.password === data.password) {
-                res.send({
-                    status:true,
-                    data:data,
-                    message: null
-                })
-            } else {
-                res.status(500).send({
-                    status:false,
-                    data: null,
-                    message: "Credenciales incorrectas"
-                })
-            }
+            res.status(200).json(Helper.basicResponse(user, null))
         }
-    })
+    } )
+    .catch(err => res.status(500).json(Helper.basicResponse(null, err)))
 }
 
 exports.register = (req, res) => {
@@ -73,21 +32,16 @@ exports.register = (req, res) => {
             message: "request vacia"
         })
     }
-    let user = new User(req.body.email, req.body.password, req.body.name, req.body.lastname, req.body.birthdate, req.body.dni,)
+    let user = init.User(req.body.email, req.body.password, req.body.name, req.body.lastname, req.body.birthdate, req.body.dni)
+    console.log('va el user', user)
 
-    User.register(user, (err, data) => {
-        if (err) {
-            res.status(500).send({
-                status: false,
-                data: null,
-                message: err.sqlMessage
-            })
-        } else {
-            res.send({
-                status: true,
-                data: data,
-                message: null
-            })
-        }
-    })
+    User.create(user)
+    .then(user => res.json(Helper.basicResponse(user, null)))
+    .catch(err => res.status(500).json(Helper.basicResponse(null, err)))
+}
+
+exports.getAll = (req, res) => {
+    User.findAll()
+    .then(users => res.json(Helper.basicResponse(users, null)))
+    .catch(err => res.status(500).json(Helper.basicResponse(null, "Ha ocurrido un error al obtener los usuarios")))
 }
