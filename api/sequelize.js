@@ -3,6 +3,9 @@ const UserModel = require('./models/user.js')
 const CarModel = require('./models/car')
 const CarForRoadModel = require('./models/carForRoad')
 const CarTypeModel = require('./models/typeCar')
+const TripModel = require('./models/trip')
+const PrizeKMModel = require('./models/prizeKM')
+const PrizeRentModel = require('./models/prizeRent')
 
 const sequelize = new Sequelize('carTrip', 'admin', 'admin', {
   host: 'localhost',
@@ -26,9 +29,19 @@ const User = UserModel(sequelize, DataTypes)
 const Car = CarModel(sequelize, DataTypes)
 const CarForRoad = CarForRoadModel(sequelize, DataTypes)
 const CarType = CarTypeModel(sequelize, DataTypes)
+const Trip = TripModel(sequelize, DataTypes)
+const PrizeKM = PrizeKMModel(sequelize, DataTypes)
+const PrizeRent = PrizeRentModel(sequelize, DataTypes)
 
 CarType.belongsTo(Car)
 Car.belongsTo(CarForRoad)
+Car.belongsTo(Trip)
+CarType.belongsTo(PrizeKM)
+CarType.belongsTo(PrizeRent)
+
+// sequelize.authenticate()
+//   .then(() => console.log("Succesfully connected"))
+//   .catch( err => console.log("Unable to connect to the database", err))
 
 sequelize.sync()
   .then(() => {
@@ -39,5 +52,8 @@ module.exports = {
     User,
     Car,
     CarForRoad,
-    CarType
+    CarType,
+    Trip,
+    PrizeKM,
+    PrizeRent
 }
