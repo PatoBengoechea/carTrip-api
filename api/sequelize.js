@@ -6,6 +6,7 @@ const CarTypeModel = require('./models/typeCar')
 const TripModel = require('./models/trip')
 const PrizeKMModel = require('./models/prizeKM')
 const PrizeRentModel = require('./models/prizeRent')
+const PassengerModel = require('./models/passenger')
 
 const sequelize = new Sequelize('carTrip', 'admin', 'admin', {
   host: 'localhost',
@@ -32,12 +33,17 @@ const CarType = CarTypeModel(sequelize, DataTypes)
 const Trip = TripModel(sequelize, DataTypes)
 const PrizeKM = PrizeKMModel(sequelize, DataTypes)
 const PrizeRent = PrizeRentModel(sequelize, DataTypes)
+const Passenger = PassengerModel(sequelize, DataTypes)
 
-CarType.belongsTo(Car)
-Car.belongsTo(CarForRoad)
-Car.belongsTo(Trip)
-CarType.belongsTo(PrizeKM)
-CarType.belongsTo(PrizeRent)
+
+Car.belongsTo(CarType, { foreignKey: "type"})
+CarType.hasMany(Car, {foreignKey: 'type', sourceKey: 'idTypeCar'})
+CarForRoad.belongsTo(Car, { foreignKey: 'idCar'})
+PrizeKM.belongsTo(CarType, { foreignKey:'idTypeCar'})
+PrizeRent.belongsTo(CarType, { foreignKey: 'idTypeCar'})
+Trip.belongsTo(Car, { foreignKey: 'idCar'})
+Trip.belongsToMany(User, { through: Passenger, foreignKey: "idTrip"})
+// User.belongsTo(Passenger)
 
 // sequelize.authenticate()
 //   .then(() => console.log("Succesfully connected"))
@@ -55,5 +61,6 @@ module.exports = {
     CarType,
     Trip,
     PrizeKM,
-    PrizeRent
+    PrizeRent,
+    Passenger
 }

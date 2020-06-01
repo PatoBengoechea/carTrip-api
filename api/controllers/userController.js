@@ -33,7 +33,6 @@ exports.register = (req, res) => {
         })
     }
     let user = init.User(req.body.email, req.body.password, req.body.name, req.body.lastname, req.body.birthdate, req.body.dni)
-    console.log('va el user', user)
 
     User.create(user)
     .then(user => res.json(Helper.basicResponse(user, null)))

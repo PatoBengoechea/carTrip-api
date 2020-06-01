@@ -1,27 +1,11 @@
-const Car = require("../models/car")
+const { Car, CarType } = require('../sequelize')
+const Helper = require('../Helper/helper')
 
-exports.getByType = (req, res) => {
-    if (!req.body.carType) { 
-        res.status(400).send({
-            status: false,
-            data: null,
-            message: "No ha enviado un tipo de vehiculo"
-        })
-    } else { 
-        Car.getByType(req.body.carType, (err, data) => {
-            if (err) { 
-                res.status(500).send( {
-                    status: false,
-                    data: null,
-                    message: "No hay vehiculos con ese ID TYPE"
-                })
-            } else {
-                res.status(200).send({
-                    status: true,
-                    data: data,
-                    message: null
-                })
-            }
-        })
-    }
+exports.getAll = (req, res) => {
+    Car.findAll({include: CarType})
+        .then((car) => {
+            res.status(200).json(Helper.basicResponse(car, null))
+        }).catch((err) => {
+            res.status(500).json(Helper.basicResponse(null, err))
+        });
 }
