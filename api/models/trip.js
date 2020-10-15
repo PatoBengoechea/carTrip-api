@@ -10,8 +10,12 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.INTEGER(4),
             allowNull: true,
         }, 
-        days: {
-            type: DataTypes.INTEGER(2),
+        dateInit: {
+            type: DataTypes.DATE,
+            allowNull: false
+        },
+        dateEnd: { 
+            type: DataTypes.DATE,
             allowNull: false
         },
         idOrigin: {
@@ -30,7 +34,7 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.DECIMAL,
             allowNull: true
         },
-        idCar: {
+        idCarForRoad: {
             type: DataTypes.INTEGER(11),
             allowNull: false
         }
