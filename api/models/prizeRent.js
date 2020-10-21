@@ -14,7 +14,7 @@ module.exports = function(sequelize, type) {
             allowNull: false
         },
         prize: {
-            type: type.DECIMAL,
+            type: type.INTEGER(10),
             allowNull: false
         }
     }, {
