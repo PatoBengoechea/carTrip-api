@@ -41,16 +41,21 @@ const Province = ProvinceModel(sequelize, DataTypes)
 
 
 CarType.hasMany(Car, { foreignKey: 'type', sourceKey: 'idTypeCar' })
-Car.belongsTo(CarType, { foreignKey: "type" })
-CarForRoad.belongsTo(Car, { foreignKey: 'idCar' })
-PrizeKM.belongsTo(CarType, { foreignKey: 'idTypeCar' })
 CarType.hasOne(PrizeRent, { foreignKey: 'idTypeCar' })
-    // PrizeRent.belongsTo(CarType, { foreignKey: 'idTypeCar' })
-    // CarForRoad.hasMany(Trip, { foreignKey: "idCarForRoad" })
+
+Car.belongsTo(CarType, { foreignKey: "type" })
+
+PrizeKM.belongsTo(CarType, { foreignKey: 'idTypeCar' })
+
+CarForRoad.belongsTo(Car, { foreignKey: 'idCar' })
+CarForRoad.hasMany(Trip, { foreignKey: "idCarForRoad", sourceKey: "idCarForRoad" })
+
+Trip.belongsTo(CarForRoad, { foreignKey: "idCarForRoad" })
 Trip.belongsToMany(User, { through: Passenger, foreignKey: "idTrip" })
 Trip.hasOne(City, { foreignKey: "idOrigin" })
 Trip.hasOne(City, { foreignKey: "idDestiny" })
-Trip.hasOne(CarForRoad, { foreignKey: "idCarForRoad" })
+
+User.hasMany(Trip, { foreignKey: "owner" })
 Province.hasMany(City, { foreignKey: 'idProvince' })
 
 // User.belongsTo(Passenger)

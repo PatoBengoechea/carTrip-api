@@ -1,5 +1,5 @@
 module.exports = function(sequelize, DataTypes) {
-    return sequelize.define('trip', { 
+    return sequelize.define('trip', {
         idTrip: {
             type: DataTypes.INTEGER(11),
             allowNull: false,
@@ -9,12 +9,12 @@ module.exports = function(sequelize, DataTypes) {
         kilometers: {
             type: DataTypes.INTEGER(4),
             allowNull: true,
-        }, 
+        },
         dateInit: {
             type: DataTypes.DATE,
             allowNull: false
         },
-        dateEnd: { 
+        dateEnd: {
             type: DataTypes.DATE,
             allowNull: false
         },
@@ -29,16 +29,16 @@ module.exports = function(sequelize, DataTypes) {
         prizeTrip: {
             type: DataTypes.DECIMAL,
             allowNull: true
-        }, 
+        },
         prizeRent: {
             type: DataTypes.DECIMAL,
             allowNull: true
         },
         idCarForRoad: {
             type: DataTypes.INTEGER(11),
-            allowNull: false
+            allowNull: false,
         }
-    }, { 
+    }, {
         tablename: 'trip'
     })
 }
