@@ -7,4 +7,6 @@ module.exports = router => {
     router.post("/rentcar", Trip.createTrip)
 
     router.get("/trips/:id", Trip.getMyTrips)
+
+    router.get("/trip/:id", Trip.getNowTrip)
 }

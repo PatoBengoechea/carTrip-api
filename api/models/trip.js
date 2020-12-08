@@ -18,8 +18,12 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.DATE,
             allowNull: false
         },
-        idOrigin: {
-            type: DataTypes.INTEGER(4),
+        latitudeOrigin: {
+            type: DataTypes.DECIMAL(14, 11),
+            allowNull: true
+        },
+        longitudeOrigin: {
+            type: DataTypes.DECIMAL(14, 11),
             allowNull: true
         },
         idDestiny: {
@@ -37,6 +41,10 @@ module.exports = function(sequelize, DataTypes) {
         idCarForRoad: {
             type: DataTypes.INTEGER(11),
             allowNull: false,
+        },
+        owner: {
+            type: DataTypes.INTEGER(11),
+            allowNull: false
         }
     }, {
         tablename: 'trip'
