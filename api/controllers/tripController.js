@@ -12,7 +12,6 @@ exports.createTrip = (req, res) => {
         Trip.create({
                 dateInit: req.body.dateInit,
                 dateEnd: req.body.dateEnd,
-                idOrigin: req.body.idOrigin,
                 idCarForRoad: req.body.idCarForRoad,
                 owner: req.body.owner,
                 latitudeOrigin: req.body.latitudeOrigin,
@@ -31,7 +30,8 @@ exports.createTrip = (req, res) => {
                 idCarForRoad: req.body.idCarForRoad,
                 owner: req.body.owner,
                 latitudeOrigin: req.body.latitudeOrigin,
-                longitudeOrigin: req.body.longitudeOrigin
+                longitudeOrigin: req.body.longitudeOrigin,
+                idDestiny: req.body.idDestiny
             })
             .then(car => {
                 if (car != null) {
@@ -66,12 +66,14 @@ exports.getMyTrips = (req, res) => {
 }
 
 exports.getNowTrip = (req, res) => {
-    let today = new Date()
+    let fullDate = new Date()
+    let today = new Date(fullDate.getFullYear(), fullDate.getMonth(), fullDate.getDate())
+
     Trip.findOne({
             where: {
                 owner: req.params.id,
                 dateEnd: {
-                    [Op.gt]: today
+                    [Op.gte]: today
                 }
             },
             include: {
