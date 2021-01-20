@@ -1,4 +1,4 @@
-module.exports = router => { 
+module.exports = router => {
     const users = require('../controllers/userController')
     const User = require("../sequelize.js")
 
@@ -7,5 +7,7 @@ module.exports = router => {
     router.post("/user/register", users.register)
 
     router.get("/user", users.getAll)
+
+    router.get("/user/license/:id", users.getMyLicense)
 
 };

@@ -1,5 +1,5 @@
 module.exports = function(sequelize, DataTypes) {
-    return sequelize.define('license', {
+    return sequelize.define('licenses', {
         idLicense: {
             type: DataTypes.INTEGER(11),
             allowNull: false,
@@ -19,6 +19,6 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: true
         }
     }, {
-        tablename: 'license'
+        tablename: 'licenses'
     })
 }

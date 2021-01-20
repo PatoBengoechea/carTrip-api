@@ -1,6 +1,8 @@
 const { User, License } = require("../sequelize.js")
 const Helper = require('../Helper/helper')
 const init = require('../Helper/initializer')
+const user = require("../models/user.js")
+const { Sequelize } = require("sequelize")
 
 exports.login = (req, res) => {
 
@@ -46,6 +48,42 @@ exports.register = (req, res) => {
             .then(user => res.json(Helper.basicResponse(user, null)))
             .catch(err => res.status(500).json(Helper.basicResponse(null, err)))
     }
+}
+
+exports.getMyLicense = (req, res) => {
+    License.findOne({
+            where: {
+                idUser: req.params.id
+            },
+            attributes: {
+                include: [Sequelize.fn('max', Sequelize.col('expireDate'))]
+            },
+            group: 'idLicense'
+        })
+        .then(license => {
+            let fullDate = new Date()
+            let today = new Date(fullDate.getFullYear(), fullDate.getMonth(), fullDate.getDate())
+            if (license != null) {
+                let license2 = {
+                    idUser: license.idUser,
+                    path: license.path,
+                    expireDate: license.expireDate,
+                    isDateExpired: (license.expireDate < today)
+                }
+                res.json(Helper.basicResponse(license2, null))
+            }
+
+            res.json(Helper.basicResponse(false, null))
+        })
+
+    .catch(err => {
+        console.log(err)
+        if (err != null) {
+            res.status(500).json(Helper.basicResponse({}, err))
+        } else {
+            res.status(200).json(Helper.basicResponse(false, null))
+        }
+    })
 }
 
 exports.getAll = (req, res) => {
