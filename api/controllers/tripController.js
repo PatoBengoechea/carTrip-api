@@ -1,7 +1,8 @@
-const { Trip, CarForRoad, Car } = require("../sequelize.js")
+const { Trip, CarForRoad, Car, Place, User, CarType } = require("../sequelize.js")
 const Helper = require('../Helper/helper')
 const init = require('../Helper/initializer')
-const { Op } = require("sequelize")
+const { Op, or } = require("sequelize")
+const { UserInit } = require("../Helper/initializer")
     // const Trip = require("../models/trip.js")
     // const { notILike } = require("sequelize/types/lib/operators")
 
@@ -47,12 +48,16 @@ exports.getMyTrips = (req, res) => {
             where: {
                 owner: req.params.id
             },
-            include: {
-                model: CarForRoad,
-                include: {
-                    model: Car
+            include: [{
+                    model: CarForRoad,
+                    include: {
+                        model: Car
+                    },
+                },
+                {
+                    model: Place
                 }
-            },
+            ],
             order: [
                 ['dateEnd', 'DESC']
             ]
@@ -92,5 +97,55 @@ exports.getNowTrip = (req, res) => {
         })
         .catch(err => {
             res.status(400)
+        })
+}
+
+exports.getTripsFromTo = (req, res) => {
+    let origin = req.params.city
+    let fullDate = new Date()
+    let today = new Date(fullDate.getFullYear(), fullDate.getMonth(), fullDate.getDate())
+
+    Trip.findAll({
+            where: {
+                idDestiny: {
+                    [Op.ne]: null
+                },
+                dateInit: {
+                    [Op.gte]: today
+                }
+            },
+            include: [{
+                    model: Place,
+                    as: "destiny"
+                },
+                {
+                    model: Place,
+                    as: "origin",
+                    where: {
+                        cityName: origin
+                    }
+                },
+                {
+                    model: CarForRoad,
+                    include: {
+                        model: Car,
+                        include: {
+                            model: CarType
+                        }
+                    }
+                },
+                {
+                    model: User
+                }
+            ]
+        })
+        .then(trips => {
+            res.status(200).json(Helper.basicResponse({ trips: trips }, null))
+        })
+        .catch(err => {
+            console.log("\n \n \n")
+            console.log("Error executing get trips from to")
+            console.log(err)
+            res.status(500).json(Helper.basicResponse(null, err))
         })
 }

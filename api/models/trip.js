@@ -18,12 +18,8 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.DATE,
             allowNull: false
         },
-        latitudeOrigin: {
-            type: DataTypes.DECIMAL(14, 11),
-            allowNull: true
-        },
-        longitudeOrigin: {
-            type: DataTypes.DECIMAL(14, 11),
+        idOrigin: {
+            type: DataTypes.INTEGER(4),
             allowNull: true
         },
         idDestiny: {

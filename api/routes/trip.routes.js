@@ -9,4 +9,6 @@ module.exports = router => {
     router.get("/trips/:id", Trip.getMyTrips)
 
     router.get("/trip/:id", Trip.getNowTrip)
+
+    router.get("/trip/from/:city", Trip.getTripsFromTo)
 }

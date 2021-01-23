@@ -1,9 +1,10 @@
 module.exports = function(sequelize, type) {
-    return sequelize.define('passenger', {
-        idPassenger: {
+    return sequelize.define('passenger_trip', {
+        idPassenger_trip: {
             type: type.INTEGER(11),
-            allowNull: false,
-            primaryKey: true
+            primaryKey: true,
+            autoIncrement: true
+
         },
         idUser: {
             type: type.INTEGER(11),
@@ -14,6 +15,6 @@ module.exports = function(sequelize, type) {
             allowNull: false
         }
     }, {
-        tablename: 'passenger'
+        tablename: 'passenger_trip'
     })
 }

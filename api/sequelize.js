@@ -56,12 +56,18 @@ CarForRoad.hasMany(Trip, { foreignKey: "idCarForRoad", sourceKey: "idCarForRoad"
 
 Trip.belongsTo(CarForRoad, { foreignKey: "idCarForRoad" })
 Trip.belongsToMany(User, { through: Passenger, foreignKey: "idTrip" })
-Trip.belongsTo(Place, { foreignKey: "idDestiny" })
+Trip.belongsTo(Place, { foreignKey: "idDestiny", as: "destiny" })
+Trip.belongsTo(Place, { foreignKey: "idOrigin", as: "origin" })
+
+Trip.belongsToMany(User, { through: "passenger_trip" })
+User.belongsToMany(Trip, { through: "passenger_trip" })
 
 User.hasMany(Trip, { foreignKey: "owner" })
 User.hasMany(License, { foreignKey: "idUser" })
 
 Province.hasMany(City, { foreignKey: 'idProvince' })
+
+Passenger.belongsTo(User, { foreignKey: "idUser" })
 
 // User.belongsTo(Passenger)
 
