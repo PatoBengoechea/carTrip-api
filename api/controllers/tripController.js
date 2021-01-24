@@ -55,7 +55,12 @@ exports.getMyTrips = (req, res) => {
                     },
                 },
                 {
-                    model: Place
+                    model: Place,
+                    as: "origin"
+                },
+                {
+                    model: Place,
+                    as: "destiny"
                 }
             ],
             order: [
