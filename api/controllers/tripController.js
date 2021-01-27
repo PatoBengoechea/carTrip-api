@@ -1,4 +1,4 @@
-const { Trip, CarForRoad, Car, Place, User, CarType } = require("../sequelize.js")
+const { Trip, CarForRoad, Car, Place, User, CarType, Passenger } = require("../sequelize.js")
 const Helper = require('../Helper/helper')
 const init = require('../Helper/initializer')
 const { Op, or } = require("sequelize")
@@ -86,12 +86,16 @@ exports.getNowTrip = (req, res) => {
                     [Op.gte]: today
                 }
             },
-            include: {
-                model: CarForRoad,
-                include: {
-                    model: Car
+            include: [{
+                    model: CarForRoad,
+                    include: {
+                        model: Car
+                    }
+                },
+                {
+                    model: User
                 }
-            }
+            ]
         })
         .then(trip => {
             if (trip == null) {
@@ -101,7 +105,8 @@ exports.getNowTrip = (req, res) => {
             }
         })
         .catch(err => {
-            res.status(400)
+            console.error(err)
+            res.status(400).json(Helper.basicResponse(null, err))
         })
 }
 

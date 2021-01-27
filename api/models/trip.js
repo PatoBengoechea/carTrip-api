@@ -18,6 +18,10 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.DATE,
             allowNull: false
         },
+        shared: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false
+        },
         idOrigin: {
             type: DataTypes.INTEGER(4),
             allowNull: true
