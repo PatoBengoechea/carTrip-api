@@ -11,6 +11,8 @@ const CityModel = require('./models/city')
 const ProvinceModel = require('./models/province')
 const LicenseModel = require('./models/license')
 const PlaceModel = require('./models/place')
+const PaymentModel = require('./models/payment')
+const CreditCardModel = require('./models/creditCard')
 
 const sequelize = new Sequelize('carTrip', 'admin', 'admin', {
     host: 'localhost',
@@ -42,6 +44,8 @@ const City = CityModel(sequelize, DataTypes)
 const Province = ProvinceModel(sequelize, DataTypes)
 const License = LicenseModel(sequelize, DataTypes)
 const Place = PlaceModel(sequelize, DataTypes)
+const Payment = PaymentModel(sequelize, DataTypes)
+const CreditCard = CreditCardModel(sequelize, DataTypes)
 
 
 CarType.hasMany(Car, { foreignKey: 'type', sourceKey: 'idTypeCar' })
@@ -53,6 +57,7 @@ PrizeKM.belongsTo(CarType, { foreignKey: 'idTypeCar' })
 
 CarForRoad.belongsTo(Car, { foreignKey: 'idCar' })
 CarForRoad.hasMany(Trip, { foreignKey: "idCarForRoad", sourceKey: "idCarForRoad" })
+CarForRoad.belongsTo(Place, { foreignKey: "idPlaceGivenBack" })
 
 Trip.belongsTo(CarForRoad, { foreignKey: "idCarForRoad" })
 Trip.belongsToMany(User, { through: Passenger, foreignKey: "idTrip" })
@@ -68,6 +73,12 @@ User.hasMany(License, { foreignKey: "idUser" })
 Province.hasMany(City, { foreignKey: 'idProvince' })
 
 Passenger.belongsTo(User, { foreignKey: "idUser" })
+
+Payment.belongsTo(User, { foreignKey: "idUser" })
+Payment.belongsTo(CreditCard, { foreignKey: "idCreditCard" })
+Payment.belongsTo(Trip, { foreignKey: "idTrip" })
+
+CreditCard.belongsTo(User, { foreignKey: "idUser" })
 
 // User.belongsTo(Passenger)
 
@@ -92,5 +103,7 @@ module.exports = {
     City,
     Province,
     License,
-    Place
+    Place,
+    Payment,
+    CreditCard
 }

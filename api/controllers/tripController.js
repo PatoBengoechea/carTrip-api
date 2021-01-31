@@ -8,15 +8,14 @@ const { UserInit } = require("../Helper/initializer")
 
 exports.createTrip = (req, res) => {
     // let now = Date()
-
     if (req.body.shared) {
         Trip.create({
                 dateInit: req.body.dateInit,
                 dateEnd: req.body.dateEnd,
                 idCarForRoad: req.body.idCarForRoad,
+                shared: req.body.shared,
                 owner: req.body.owner,
-                latitudeOrigin: req.body.latitudeOrigin,
-                longitudeOrigin: req.body.longitudeOrigin
+                idOrigin: req.body.idPlace
             })
             .then(car => {
                 if (car != null) {
@@ -30,8 +29,8 @@ exports.createTrip = (req, res) => {
                 dateEnd: req.body.dateEnd,
                 idCarForRoad: req.body.idCarForRoad,
                 owner: req.body.owner,
-                latitudeOrigin: req.body.latitudeOrigin,
-                longitudeOrigin: req.body.longitudeOrigin,
+                shared: req.body.shared,
+                idOrigin: req.body.idPlace,
                 idDestiny: req.body.idDestiny
             })
             .then(car => {
@@ -94,6 +93,14 @@ exports.getNowTrip = (req, res) => {
                 },
                 {
                     model: User
+                },
+                {
+                    model: Place,
+                    as: "destiny"
+                },
+                {
+                    model: Place,
+                    as: "origin"
                 }
             ]
         })
