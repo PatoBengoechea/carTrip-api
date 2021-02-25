@@ -3,7 +3,8 @@ module.exports = function(sequelize, type) {
         idPayment: {
             type: type.INTEGER(11),
             allowNull: false,
-            primaryKey: true
+            primaryKey: true,
+            autoIncrement: true
         },
         idUser: {
             type: type.INTEGER(11),
@@ -18,7 +19,7 @@ module.exports = function(sequelize, type) {
             allowNull: false
         },
         amount: {
-            type: type.DOUBLE(4, 2),
+            type: type.DOUBLE(8, 2),
             allowNull: false
         }
     }, {

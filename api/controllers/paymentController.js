@@ -35,3 +35,18 @@ exports.getAllCreditCards = (req, res) => {
             res.status(500).json(Helper.basicResponse(null, err))
         })
 }
+
+exports.getOne = (req, res) => {
+    CreditCard.findOne({
+            where: {
+                idUser: req.params.id
+            }
+        })
+        .then(creditCard => {
+            res.status(200).json(Helper.basicResponse({ creditCards: creditCard }, null))
+        })
+        .catch(err => {
+            console.error(err)
+            res.status(500).json(Helper.basicResponse(null, err))
+        })
+}

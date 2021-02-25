@@ -3,5 +3,7 @@ module.exports = router => {
 
     router.post('/creditcard', payment.addCreditCard)
 
-    router.get("/creditcard/:id", payment.getAllCreditCards)
+    router.get("/creditcards/:id", payment.getAllCreditCards)
+
+    router.get("/creditcard/:id", payment.getOne)
 };

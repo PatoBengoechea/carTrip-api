@@ -63,6 +63,7 @@ Trip.belongsTo(CarForRoad, { foreignKey: "idCarForRoad" })
 Trip.belongsToMany(User, { through: Passenger, foreignKey: "idTrip" })
 Trip.belongsTo(Place, { foreignKey: "idDestiny", as: "destiny" })
 Trip.belongsTo(Place, { foreignKey: "idOrigin", as: "origin" })
+Trip.hasMany(Payment, { foreignKey: "idTrip" })
 
 Trip.belongsToMany(User, { through: "passenger_trip" })
 User.belongsToMany(Trip, { through: "passenger_trip" })
@@ -76,7 +77,7 @@ Passenger.belongsTo(User, { foreignKey: "idUser" })
 
 Payment.belongsTo(User, { foreignKey: "idUser" })
 Payment.belongsTo(CreditCard, { foreignKey: "idCreditCard" })
-Payment.belongsTo(Trip, { foreignKey: "idTrip" })
+    // Payment.belongsTo(Trip, { foreignKey: "idTrip" })
 
 CreditCard.belongsTo(User, { foreignKey: "idUser" })
 
