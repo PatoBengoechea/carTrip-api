@@ -7,7 +7,6 @@ const { UserInit } = require("../Helper/initializer")
     // const { notILike } = require("sequelize/types/lib/operators")
 
 exports.createTrip = (req, res) => {
-    // let now = Date()
     if (req.body.shared) {
         Trip.create({
                 dateInit: req.body.dateInit,
@@ -18,6 +17,13 @@ exports.createTrip = (req, res) => {
                 idOrigin: req.body.idPlace
             })
             .then(car => {
+                Assurance.create({
+                    idUser: req.body.owner,
+                    idCreditCard: req.body.idCreditCard,
+                    amount: 5000,
+                    idTrip: car.idTrip,
+                    givenBack: false
+                })
                 if (car != null) {
                     console.log(car)
                     res.status(200).json(Helper.basicResponse({ data: car }, null))

@@ -91,3 +91,17 @@ exports.getAll = (req, res) => {
         .then(users => res.json(Helper.basicResponse(users, null)))
         .catch(err => res.status(500).json(Helper.basicResponse(null, "Ha ocurrido un error al obtener los usuarios")))
 }
+
+exports.createLicense = (req, res) => {
+    License.create({
+            idUser: req.body.idUser,
+            path: req.body.path
+        }).then(license => {
+            console.log(license)
+            res.json(Helper.basicResponse({ license: license }, null))
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(500).json(Helper.basicResponse(null, "No se ha podido cargar la licencia de conducir"))
+        })
+}

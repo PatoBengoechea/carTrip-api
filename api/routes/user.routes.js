@@ -10,4 +10,6 @@ module.exports = router => {
 
     router.get("/user/license/:id", users.getMyLicense)
 
+    router.post("/user/license", users.createLicense)
+
 };
