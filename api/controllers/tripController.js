@@ -1,4 +1,4 @@
-const { Trip, CarForRoad, Car, Place, User, CarType, Passenger, Payment } = require("../sequelize.js")
+const { Trip, CarForRoad, Car, Place, User, CarType, Passenger, Payment, Assurance } = require("../sequelize.js")
 const Helper = require('../Helper/helper')
 const init = require('../Helper/initializer')
 const { Op, or } = require("sequelize")
@@ -42,6 +42,14 @@ exports.createTrip = (req, res) => {
                         amount: req.body.amount,
                         idTrip: car.idTrip
                     })
+                    Assurance.create({
+                        idUser: req.body.owner,
+                        idCreditCard: req.body.idCreditCard,
+                        amount: 5000,
+                        idTrip: car.idTrip,
+                        givenBack: false
+                    })
+
                     res.status(200).json(Helper.basicResponse({ data: car }, null))
                 }
             })

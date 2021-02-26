@@ -13,6 +13,7 @@ const LicenseModel = require('./models/license')
 const PlaceModel = require('./models/place')
 const PaymentModel = require('./models/payment')
 const CreditCardModel = require('./models/creditCard')
+const AssuranceModel = require('./models/assurance')
 
 const sequelize = new Sequelize('carTrip', 'admin', 'admin', {
     host: 'localhost',
@@ -46,6 +47,7 @@ const License = LicenseModel(sequelize, DataTypes)
 const Place = PlaceModel(sequelize, DataTypes)
 const Payment = PaymentModel(sequelize, DataTypes)
 const CreditCard = CreditCardModel(sequelize, DataTypes)
+const Assurance = AssuranceModel(sequelize, DataTypes)
 
 
 CarType.hasMany(Car, { foreignKey: 'type', sourceKey: 'idTypeCar' })
@@ -81,6 +83,9 @@ Payment.belongsTo(CreditCard, { foreignKey: "idCreditCard" })
 
 CreditCard.belongsTo(User, { foreignKey: "idUser" })
 
+Assurance.belongsTo(Trip, { foreignKey: "idTrip" })
+Assurance.belongsTo(User, { foreignKey: "idUser" })
+
 // User.belongsTo(Passenger)
 
 // sequelize.authenticate()
@@ -106,5 +111,6 @@ module.exports = {
     License,
     Place,
     Payment,
-    CreditCard
+    CreditCard,
+    Assurance
 }
