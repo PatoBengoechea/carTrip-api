@@ -8,66 +8,36 @@ const prizeKM = require("../models/prizeKM.js")
     // const { notILike } = require("sequelize/types/lib/operators")
 
 exports.createTrip = (req, res) => {
-    if (req.body.shared) {
-        Trip.create({
-                dateInit: req.body.dateInit,
-                dateEnd: req.body.dateEnd,
-                idCarForRoad: req.body.idCarForRoad,
-                shared: req.body.shared,
-                owner: req.body.owner,
-                idOrigin: req.body.idPlace
+    console.log(req)
+    console.log(req.body)
+    Trip.create({
+            dateInit: req.body.dateInit,
+            dateEnd: req.body.dateEnd,
+            idCarForRoad: req.body.idCarForRoad,
+            shared: req.body.shared,
+            owner: req.body.owner,
+            idDestiny: req.body.idPlace
+        })
+        .then(car => {
+            Payment.create({
+                idUser: req.body.owner,
+                idCreditCard: req.body.idCreditCard,
+                amount: req.body.amount,
+                idTrip: car.idTrip
             })
-            .then(car => {
-                Payment.create({
-                    idUser: req.body.owner,
-                    idCreditCard: req.body.idCreditCard,
-                    amount: req.body.amount,
-                    idTrip: car.idTrip
-                })
 
-                Assurance.create({
-                    idUser: req.body.owner,
-                    idCreditCard: req.body.idCreditCard,
-                    amount: 5000,
-                    idTrip: car.idTrip,
-                    givenBack: false
-                })
-                if (car != null) {
-                    console.log(car)
-                    res.status(200).json(Helper.basicResponse({ data: car }, null))
-                }
+            Assurance.create({
+                idUser: req.body.owner,
+                idCreditCard: req.body.idCreditCard,
+                amount: 5000,
+                idTrip: car.idTrip,
+                givenBack: false
             })
-    } else if (!req.body.shared) {
-        Trip.create({
-                dateInit: req.body.dateInit,
-                dateEnd: req.body.dateEnd,
-                idCarForRoad: req.body.idCarForRoad,
-                owner: req.body.owner,
-                shared: req.body.shared,
-                idOrigin: req.body.idPlace,
-                idDestiny: req.body.idDestiny
-            })
-            .then(car => {
-                if (car != null) {
-                    console.log(car)
-                    Payment.create({
-                        idUser: req.body.owner,
-                        idCreditCard: req.body.idCreditCard,
-                        amount: req.body.amount,
-                        idTrip: car.idTrip
-                    })
-                    Assurance.create({
-                        idUser: req.body.owner,
-                        idCreditCard: req.body.idCreditCard,
-                        amount: 5000,
-                        idTrip: car.idTrip,
-                        givenBack: false
-                    })
-
-                    res.status(200).json(Helper.basicResponse({ data: car }, null))
-                }
-            })
-    }
+            if (car != null) {
+                console.log(car)
+                res.status(200).json(Helper.basicResponse({ data: car }, null))
+            }
+        })
 }
 
 exports.getMyTrips = (req, res) => {
