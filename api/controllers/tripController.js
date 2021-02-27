@@ -1,8 +1,9 @@
-const { Trip, CarForRoad, Car, Place, User, CarType, Passenger, Payment, Assurance } = require("../sequelize.js")
+const { Trip, CarForRoad, Car, Place, User, CarType, PassengerTrip, Payment, Assurance, PrizeKM, PrizeRent } = require("../sequelize.js")
 const Helper = require('../Helper/helper')
 const init = require('../Helper/initializer')
 const { Op, or } = require("sequelize")
 const { UserInit } = require("../Helper/initializer")
+const prizeKM = require("../models/prizeKM.js")
     // const Trip = require("../models/trip.js")
     // const { notILike } = require("sequelize/types/lib/operators")
 
@@ -17,6 +18,13 @@ exports.createTrip = (req, res) => {
                 idOrigin: req.body.idPlace
             })
             .then(car => {
+                Payment.create({
+                    idUser: req.body.owner,
+                    idCreditCard: req.body.idCreditCard,
+                    amount: req.body.amount,
+                    idTrip: car.idTrip
+                })
+
                 Assurance.create({
                     idUser: req.body.owner,
                     idCreditCard: req.body.idCreditCard,
@@ -142,6 +150,8 @@ exports.getTripsFromTo = (req, res) => {
     let fullDate = new Date()
     let today = new Date(fullDate.getFullYear(), fullDate.getMonth(), fullDate.getDate())
 
+    console.log(req.body.idUser)
+
     Trip.findAll({
             where: {
                 idDestiny: {
@@ -167,22 +177,58 @@ exports.getTripsFromTo = (req, res) => {
                     include: {
                         model: Car,
                         include: {
-                            model: CarType
+                            model: CarType,
+                            include: [{
+                                model: PrizeKM
+                            }, {
+                                model: PrizeRent
+                            }]
                         }
                     }
                 },
                 {
-                    model: User
+                    model: User,
+                    // where: {
+                    //     idUser: {
+                    //         [Op.ne]: req.body.idUser
+                    //     }
+                    // }
                 }
             ]
         })
         .then(trips => {
+            trips.forEach(trip => {
+                trip.users.forEach(user => {
+                    if (user.iduser == req.body.idUser) {
+                        trips.pop(trip)
+                    }
+                })
+            });
             res.status(200).json(Helper.basicResponse({ trips: trips }, null))
         })
         .catch(err => {
             console.log("\n \n \n")
             console.log("Error executing get trips from to")
             console.log(err)
-            res.status(500).json(Helper.basicResponse(null, err))
+            res.status(500).json(Helper.basicResponse(null, "No se pudieron obtener los viajes"))
+        })
+}
+
+exports.addAsPassenger = (req, res) => {
+    PassengerTrip.create({
+            idUser: req.body.idUser,
+            idTrip: req.body.idTrip
+        }, {
+            include: {
+                model: Trip
+            }
+        })
+        .then(result => {
+            console.log(result)
+            res.status(200).json(Helper.basicResponse({ result: result }, null))
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(500).json(Helper.basicResponse(null, "No se ha podido cargar como pasajero"))
         })
 }

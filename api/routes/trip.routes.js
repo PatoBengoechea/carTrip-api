@@ -10,5 +10,7 @@ module.exports = router => {
 
     router.get("/trip/:id", Trip.getNowTrip)
 
-    router.get("/trip/from/:city", Trip.getTripsFromTo)
+    router.post("/trip/from/:city", Trip.getTripsFromTo)
+
+    router.post("/trip/passenger", Trip.addAsPassenger)
 }

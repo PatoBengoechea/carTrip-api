@@ -14,6 +14,7 @@ const PlaceModel = require('./models/place')
 const PaymentModel = require('./models/payment')
 const CreditCardModel = require('./models/creditCard')
 const AssuranceModel = require('./models/assurance')
+const PassengerTripModel = require('./models/passenger_trip')
 
 const sequelize = new Sequelize('carTrip', 'admin', 'admin', {
     host: 'localhost',
@@ -48,6 +49,7 @@ const Place = PlaceModel(sequelize, DataTypes)
 const Payment = PaymentModel(sequelize, DataTypes)
 const CreditCard = CreditCardModel(sequelize, DataTypes)
 const Assurance = AssuranceModel(sequelize, DataTypes)
+const PassengerTrip = PassengerTripModel(sequelize, DataTypes)
 
 
 CarType.hasMany(Car, { foreignKey: 'type', sourceKey: 'idTypeCar' })
@@ -61,13 +63,13 @@ CarForRoad.hasMany(Trip, { foreignKey: "idCarForRoad", sourceKey: "idCarForRoad"
 CarForRoad.belongsTo(Place, { foreignKey: "idPlaceGivenBack" })
 
 Trip.belongsTo(CarForRoad, { foreignKey: "idCarForRoad" })
-Trip.belongsToMany(User, { through: Passenger, foreignKey: "idTrip" })
+Trip.belongsToMany(User, { through: PassengerTrip, foreignKey: "idTrip" })
 Trip.belongsTo(Place, { foreignKey: "idDestiny", as: "destiny" })
 Trip.belongsTo(Place, { foreignKey: "idOrigin", as: "origin" })
 Trip.hasMany(Payment, { foreignKey: "idTrip" })
 
-Trip.belongsToMany(User, { through: "passenger_trip" })
-User.belongsToMany(Trip, { through: "passenger_trip" })
+Trip.belongsToMany(User, { through: PassengerTrip, foreignKey: "idTrip" })
+User.belongsToMany(Trip, { through: PassengerTrip, foreignKey: "idUser" })
 
 User.hasMany(Trip, { foreignKey: "owner" })
 User.hasMany(License, { foreignKey: "idUser" })
@@ -75,6 +77,8 @@ User.hasMany(License, { foreignKey: "idUser" })
 Province.hasMany(City, { foreignKey: 'idProvince' })
 
 Passenger.belongsTo(User, { foreignKey: "idUser" })
+
+PassengerTrip.belongsTo(Trip, { foreignKey: "idTrip" })
 
 Payment.belongsTo(User, { foreignKey: "idUser" })
 Payment.belongsTo(CreditCard, { foreignKey: "idCreditCard" })
@@ -111,5 +115,6 @@ module.exports = {
     Place,
     Payment,
     CreditCard,
-    Assurance
+    Assurance,
+    PassengerTrip
 }

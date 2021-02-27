@@ -3,7 +3,8 @@ module.exports = function(sequelize, type) {
         idPassenger: {
             type: type.INTEGER(11),
             allowNull: false,
-            primaryKey: true
+            primaryKey: true,
+            autoIncrement: true
         },
         idUser: {
             type: type.INTEGER(11),
