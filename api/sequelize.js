@@ -52,10 +52,9 @@ const Assurance = AssuranceModel(sequelize, DataTypes)
 
 CarType.hasMany(Car, { foreignKey: 'type', sourceKey: 'idTypeCar' })
 CarType.hasOne(PrizeRent, { foreignKey: 'idTypeCar' })
+CarType.hasOne(PrizeKM, { foreignKey: "idtypeCar" })
 
 Car.belongsTo(CarType, { foreignKey: "type" })
-
-PrizeKM.belongsTo(CarType, { foreignKey: 'idTypeCar' })
 
 CarForRoad.belongsTo(Car, { foreignKey: 'idCar' })
 CarForRoad.hasMany(Trip, { foreignKey: "idCarForRoad", sourceKey: "idCarForRoad" })

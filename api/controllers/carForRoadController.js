@@ -1,6 +1,7 @@
-const { CarForRoad, Car, Trip, CarType, PrizeRent } = require("../sequelize")
+const { CarForRoad, Car, Trip, CarType, PrizeRent, PrizeKM } = require("../sequelize")
 const helper = require("../Helper/helper")
 const typeCar = require("../models/typeCar")
+const prizeKM = require("../models/prizeKM")
     // const { is } = require("sequelize/types/lib/operators")
 
 exports.getAll = (req, res) => {
@@ -45,6 +46,8 @@ exports.getOne = (req, res) => {
                     model: CarType,
                     include: [{
                         model: PrizeRent
+                    }, {
+                        model: PrizeKM
                     }]
                 }]
             },

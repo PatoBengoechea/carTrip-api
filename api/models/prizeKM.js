@@ -1,20 +1,21 @@
 module.exports = function(sequelize, type) {
-    return sequelize.define('prizeKM', { 
+    return sequelize.define('prizeKM', {
         idPrizeKM: {
             type: type.INTEGER(11),
             allowNull: false,
-            primaryKey: true
-        }, 
+            primaryKey: true,
+            autoIncrement: true
+        },
         idTypeCar: {
             type: type.INTEGER(11),
             allowNull: false
-        }, 
+        },
         date: {
             type: type.DATE,
             allowNull: false
-        }, 
+        },
         prize: {
-            type: type.DECIMAL,
+            type: type.INTEGER(10),
             allowNull: false
         }
     }, {
