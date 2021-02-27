@@ -43,7 +43,11 @@ exports.getOne = (req, res) => {
             }
         })
         .then(creditCard => {
-            res.status(200).json(Helper.basicResponse({ creditCards: creditCard }, null))
+            if (creditCard == null) {
+                res.status(200).json(Helper.basicResponse({ creditCards: false }, null))
+            } else {
+                res.status(200).json(Helper.basicResponse({ creditCards: creditCard }, null))
+            }
         })
         .catch(err => {
             console.error(err)

@@ -104,7 +104,52 @@ exports.getNowTrip = (req, res) => {
         })
         .then(trip => {
             if (trip == null) {
-                res.status(200).json(Helper.basicResponse({ noTrip: true }, null))
+                let fullDate = new Date()
+                PassengerTrip.findOne({
+                        where: {
+                            idUser: req.params.id
+                        },
+                        include: {
+                            model: Trip,
+                            where: {
+                                owner: {
+                                    [Op.ne]: req.params.id
+                                }
+                            },
+                            include: [{
+                                    model: User
+                                },
+                                {
+                                    model: CarForRoad,
+                                    include: {
+                                        model: Car
+                                    }
+                                },
+                                {
+                                    model: User
+                                },
+                                {
+                                    model: Place,
+                                    as: "destiny"
+                                },
+                                {
+                                    model: Place,
+                                    as: "origin"
+                                }
+                            ]
+                        }
+                    })
+                    .then(result => {
+
+                        if (result == null) {
+                            res.status(200).json(Helper.basicResponse({ noTrip: true }, null))
+                        } else if (Date(result.trip.dateInit) != fullDate) {
+                            res.status(200).json(Helper.basicResponse({ noTrip: true }, null))
+                        } else {
+                            res.status(200).json(Helper.basicResponse({ trip: result.trip }, null))
+                        }
+                    })
+                    // res.status(200).json(Helper.basicResponse({ noTrip: true }, null))
             } else {
                 res.status(200).json(Helper.basicResponse({ trip: trip }, null))
             }
@@ -200,5 +245,32 @@ exports.addAsPassenger = (req, res) => {
         .catch(err => {
             console.log(err)
             res.status(500).json(Helper.basicResponse(null, "No se ha podido cargar como pasajero"))
+        })
+}
+
+exports.getNowTripAsPassenger = (req, res) => {
+    let fullDate = new Date()
+    PassengerTrip.findOne({
+            where: {
+                idUser: req.params.id
+            },
+            include: {
+                model: Trip,
+                where: {
+                    owner: {
+                        [Op.ne]: req.params.id
+                    }
+                },
+                include: {
+                    model: User
+                }
+            }
+        })
+        .then(result => {
+            if (Date(result.trip.dateInit) != fullDate) {
+                res.status(200).json(Helper.basicResponse({ result: false }, null))
+            } else {
+                res.status(200).json(Helper.basicResponse({ trip: result.trip }, null))
+            }
         })
 }
