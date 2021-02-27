@@ -30,14 +30,6 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.INTEGER(4),
             allowNull: true
         },
-        prizeTrip: {
-            type: DataTypes.DECIMAL,
-            allowNull: true
-        },
-        prizeRent: {
-            type: DataTypes.DECIMAL,
-            allowNull: true
-        },
         idCarForRoad: {
             type: DataTypes.INTEGER(11),
             allowNull: false,
