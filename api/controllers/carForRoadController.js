@@ -18,10 +18,10 @@ exports.getAll = (req, res) => {
         var availableCars = []
         let today = new Date()
         cars.forEach(car => {
-            var isAvailable = true
+            var isAvailable = false
             car.trips.forEach(trip => {
-                if (trip.dateEnd > today) {
-                    isAvailable = false
+                if (trip.dateInit > today || trip.DateEnd < today) {
+                    isAvailable = true
                 }
             })
             if (isAvailable) {

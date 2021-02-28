@@ -81,6 +81,9 @@ exports.getNowTrip = (req, res) => {
                 owner: req.params.id,
                 dateEnd: {
                     [Op.gte]: today
+                },
+                dateInit: {
+                    [Op.lte]: today
                 }
             },
             include: [{
