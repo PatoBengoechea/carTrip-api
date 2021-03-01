@@ -73,8 +73,8 @@ exports.getMyTrips = (req, res) => {
 }
 
 exports.getNowTrip = (req, res) => {
-    let fullDate = new Date()
-    let today = new Date(fullDate.getFullYear(), fullDate.getMonth(), fullDate.getDate())
+    let today = new Date()
+        // let today = new Date(fullDate.getFullYear(), fullDate.getMonth(), fullDate.getDate())
 
     Trip.findOne({
             where: {
